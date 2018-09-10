@@ -13,6 +13,7 @@
 		526B80401EABD92200259970 /* RCTPdfPageViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 526B803F1EABD92200259970 /* RCTPdfPageViewManager.m */; };
 		52A324EA1FD3C3FB000B0B18 /* PdfManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A324E91FD3C3FB000B0B18 /* PdfManager.m */; };
 		52F79DB71EB2DA4F00CAD00C /* RCTPdfPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F79DB41EB2DA4F00CAD00C /* RCTPdfPageView.m */; };
+		A5E2F2502146339C003C7B59 /* SecurePdfView.m in Sources */ = {isa = PBXBuildFile; fileRef = A5E2F24F2146339C003C7B59 /* SecurePdfView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -40,6 +41,8 @@
 		52A324E91FD3C3FB000B0B18 /* PdfManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PdfManager.m; sourceTree = "<group>"; };
 		52F79DB31EB2DA4F00CAD00C /* RCTPdfPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTPdfPageView.h; sourceTree = "<group>"; };
 		52F79DB41EB2DA4F00CAD00C /* RCTPdfPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTPdfPageView.m; sourceTree = "<group>"; };
+		A5E2F24E2146339C003C7B59 /* SecurePdfView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecurePdfView.h; sourceTree = "<group>"; };
+		A5E2F24F2146339C003C7B59 /* SecurePdfView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecurePdfView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +77,8 @@
 		20D8E0411C8E946C00039823 /* RCTPdf */ = {
 			isa = PBXGroup;
 			children = (
+				A5E2F24E2146339C003C7B59 /* SecurePdfView.h */,
+				A5E2F24F2146339C003C7B59 /* SecurePdfView.m */,
 				5267DA02210F0EDD00D20C59 /* RCTPdfView.h */,
 				5267DA03210F0EDD00D20C59 /* RCTPdfView.m */,
 				5267DA04210F0EDD00D20C59 /* RCTPdfViewManager.h */,
@@ -153,6 +158,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5E2F2502146339C003C7B59 /* SecurePdfView.m in Sources */,
 				52A324EA1FD3C3FB000B0B18 /* PdfManager.m in Sources */,
 				5267DA07210F0EDE00D20C59 /* RCTPdfViewManager.m in Sources */,
 				5267DA06210F0EDE00D20C59 /* RCTPdfView.m in Sources */,
