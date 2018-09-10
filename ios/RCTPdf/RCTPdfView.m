@@ -10,7 +10,7 @@
 
 #import <Foundation/Foundation.h>
 #import <QuartzCore/QuartzCore.h>
-#import <PDFKit/PDFKit.h>
+#import "SecurePdfView.h"
 
 #if __has_include(<React/RCTAssert.h>)
 #import <React/RCTBridgeModule.h>
@@ -40,7 +40,7 @@ const float MIN_SCALE = 1.0f;
 @implementation RCTPdfView
 {
     PDFDocument *_pdfDocument;
-    PDFView *_pdfView;
+    SecurePdfView *_pdfView;
     float _fixScaleFactor;
     bool _initialed;
     NSArray<NSString *> *_changedProps;
@@ -62,7 +62,7 @@ const float MIN_SCALE = 1.0f;
         _spacing = 10;
 
         // init and config PDFView
-        _pdfView = [[PDFView alloc] initWithFrame:CGRectMake(0, 0, 500, 500)];
+        _pdfView = [[SecurePdfView alloc] initWithFrame:CGRectMake(0, 0, 500, 500)];
         _pdfView.displayMode = kPDFDisplaySinglePageContinuous;
         _pdfView.autoScales = YES;
         _pdfView.displaysPageBreaks = YES;
