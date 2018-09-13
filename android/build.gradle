@@ -3,6 +3,11 @@ description = 'react-native-pdf'
 buildscript {
     repositories {
         jcenter()
+        google()
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
     }
 
     dependencies {
@@ -12,6 +17,11 @@ buildscript {
 
 repositories {
     jcenter()
+    google()
+    maven {
+        url 'https://maven.google.com/'
+        name 'Google'
+    }
 }
 
 apply plugin: 'com.android.library'
