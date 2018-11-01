@@ -62,9 +62,36 @@ A4. Expo does not support native module. you can read more expo caveats [`here`]
 
 ### ChangeLog
 
+v5.0.9
+1. fix podspec
+2. NS_CLASS_AVAILABLE_IOS(11_0) to PDFKit related codes
+3. Fix pdfs when pipe appears in table content json
+4. modify build.gradle for RN 0.57
+
+v5.0.8
+1. fix podspec
+
+v5.0.7
+1. onLoadComplete return table of contents
+2. delete tmp file after downloaded
+
+v5.0.6
+1. add accessible to PdfPageView
+2. restore podspec
+
+v5.0.5
+1. add minScale, maxScale props
+2. fix pdf display box
+3. fix Content-length check
+
+v5.0.4
+1. fix ios background not work
+2. fix can not show two pdf in in one page
+
 v5.0.3
 1. add enableAnnotationRendering property support, default enableAnnotationRendering=true
 2. android build.gradle can reference root project sdk and buildTool setting
+3. fix ios progressbar not work
 
 v5.0.2
 1. fix file successfully download check
@@ -81,17 +108,6 @@ v5.0.0 (**break change**)
 4. support pdf with links (iOS SDK>=11)
 5. fix zoom (iOS SDK>=11)
 
-
-v4.0.0 (**break change**)
-1. replace dependence lib ```react-native-fetch-blob``` with ```rn-fetch-blob```
-if you upgrade from an old version, you should 
-```
-react-native unlink react-native-fetch-blob
-npm uninstall react-native-fetch-blob
-
-npm install rn-fetch-blob --save
-react-native link rn-fetch-blob
-```
 
 [[more]](https://github.com/wonday/react-native-pdf/releases)
 
@@ -161,7 +177,9 @@ const styles = StyleSheet.create({
 | ------------- |:-------------:|:----------------:| ------------------- | ------| ------- | ------------ |
 | source        | object        | not null         | PDF source like {uri:xxx, cache:false}. see the following for detail.| ✔ | ✔ | <3.0 |
 | page          | number        | 1                | initial page index          | ✔   | ✔ | <3.0 |
-| scale         | number        | 1.0              | zoom scale, 1<=scale<=3| ✔   | ✔ | <3.0 |
+| scale         | number        | 1.0              | should minScale<=scale<=maxScale| ✔   | ✔ | <3.0 |
+| minScale         | number        | 1.0              | max scale| ✔   | ✔ | 5.0.5 |
+| maxScale         | number        | 3.0              | min scale| ✔   | ✔ | 5.0.5 |
 | horizontal    | bool          | false            | draw page direction, if you want to listen the orientation change, you can use  [[react-native-orientation-locker]](https://github.com/wonday/react-native-orientation-locker)| ✔   | ✔ | <3.0 |
 | fitWidth      | bool          | false            | if true fit the width of view, can not use fitWidth=true together with scale| ✔   | ✔ | <3.0, abandoned from 3.0 |
 | fitPolicy     | number        | 2                | 0:fit width, 1:fit height, 2:fit both(default)| ✔   | ✔ | 3.0 |
@@ -175,7 +193,7 @@ const styles = StyleSheet.create({
 | enableRTL  | bool            | false        | scroll page as "page3, page2, page1"  | ✔   | ✖ | 5.0.1 |
 | enableAnnotationRendering  | bool            | true        | enable rendering annotation, notice:iOS only support initial setting,not support realtime changing  | ✔ | ✔ | 5.0.3 |
 | onLoadProgress      | function(percent) | null        | callback when loading, return loading progress (0-1) | ✔   | ✔ | <3.0 |
-| onLoadComplete      | function(numberOfPages, path, {width, height}) | null        | callback when pdf load completed, return total page count and pdf local/cache path | ✔   | ✔ | <3.0 |
+| onLoadComplete      | function(numberOfPages, path, {width, height}, tableContents) | null        | callback when pdf load completed, return total page count, pdf local/cache path, {width,height} and table of contents | ✔   | ✔ | <3.0 |
 | onPageChanged       | function(page,numberOfPages)  | null        | callback when page changed ,return current page and total page count | ✔   | ✔ | <3.0 |
 | onError       | function(error) | null        | callback when error happened | ✔   | ✔ | <3.0 |
 | onPageSingleTap   | function(page)  | null        | callback when page was single tapped | ✔ | ✔ | 3.0 |

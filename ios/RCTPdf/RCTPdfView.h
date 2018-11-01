@@ -20,11 +20,13 @@
 
 @class RCTEventDispatcher;
 
-@interface RCTPdfView : UIView <UIGestureRecognizerDelegate>
+NS_CLASS_AVAILABLE_IOS(11_0) @interface RCTPdfView : UIView <UIGestureRecognizerDelegate>
 
 @property(nonatomic, strong) NSString *path;
 @property(nonatomic) int page;
 @property(nonatomic) float scale;
+@property(nonatomic) float minScale;
+@property(nonatomic) float maxScale;
 @property(nonatomic) BOOL horizontal;
 @property(nonatomic) BOOL enablePaging;
 @property(nonatomic) BOOL enableRTL;

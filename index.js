@@ -40,6 +40,8 @@ export default class Pdf extends Component {
         ]).isRequired,
         page: PropTypes.number,
         scale: PropTypes.number,
+        minScale: PropTypes.number,
+        maxScale: PropTypes.number,
         horizontal: PropTypes.bool,
         spacing: PropTypes.number,
         password: PropTypes.string,
@@ -70,6 +72,8 @@ export default class Pdf extends Component {
     static defaultProps = {
         password: "",
         scale: 1,
+        minScale: 1,
+        maxScale: 3,
         spacing: 10,
         fitPolicy: 2, //fit both
         horizontal: false,
@@ -262,7 +266,7 @@ export default class Pdf extends Component {
 
                 this.lastRNBFTask = null;
 
-                if (res && res.respInfo && res.respInfo.headers && res.respInfo.headers["Content-Length"]) {
+                if (res && res.respInfo && res.respInfo.headers && !res.respInfo.headers["Content-Encoding"] && !res.respInfo.headers["Transfer-Encoding"] && res.respInfo.headers["Content-Length"]) {
                     const expectedContentLength = res.respInfo.headers["Content-Length"];
                     let actualContentLength;
 
@@ -288,6 +292,7 @@ export default class Pdf extends Component {
                     .cp(tempCacheFile, cacheFile)
                     .then(() => {
                         this.setState({path: cacheFile, isDownloaded: true, progress: 1});
+                        this._unlinkFile(tempCacheFile);
                     })
                     .catch(async (error) => {
                         throw error;
@@ -320,11 +325,15 @@ export default class Pdf extends Component {
         let message = event.nativeEvent.message.split('|');
         //__DEV__ && console.log("onChange: " + message);
         if (message.length > 0) {
+            if (message.length > 5) {
+                message[4] = message.splice(4).join('|');
+            }
             if (message[0] === 'loadComplete') {
                 this.props.onLoadComplete && this.props.onLoadComplete(Number(message[1]), this.state.path, {
                     width: Number(message[2]),
-                    height: Number(message[3])
-                });
+                    height: Number(message[3]),
+                },
+                message[4]&&JSON.parse(message[4]));
             } else if (message[0] === 'pageChanged') {
                 this.props.onPageChanged && this.props.onPageChanged(Number(message[1]), Number(message[2]));
             } else if (message[0] === 'error') {
