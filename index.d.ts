@@ -10,7 +10,7 @@ import * as React from 'react';
 import * as ReactNative from 'react-native';
 
 interface Props {
-    style?: ReactNative.StyleProp<ReactNative.ViewStyle>,
+    style?: ReactNative.ViewStyle,
     source: object,
     page?: number,
     scale?: number,
