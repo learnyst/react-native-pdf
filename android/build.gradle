@@ -2,12 +2,12 @@ description = 'react-native-pdf'
 
 buildscript {
     repositories {
-        jcenter()
-        google()
         maven {
             url 'https://maven.google.com/'
             name 'Google'
         }
+        jcenter()
+        google()
     }
 
     dependencies {
