@@ -149,6 +149,19 @@ public class PdfView extends PDFView implements OnPageChangeListener,OnLoadCompl
         Constants.Pinch.MINIMUM_ZOOM = this.minScale;
         Constants.Pinch.MAXIMUM_ZOOM = this.maxScale;
 
+        // If the entire doc fits in one screen, then page is 0 and offset is 0.5
+        if ((positionOffset >= 0.99) 
+            || (page == 0) && (positionOffset == 0.5)) {
+            WritableMap event = Arguments.createMap();
+            event.putString("message", "documentCompleted");
+
+            ReactContext reactContext = (ReactContext)this.getContext();
+            reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(
+                this.getId(),
+                "topChange",
+                event
+             );
+        }
     }
 
     @Override
