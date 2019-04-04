@@ -102,7 +102,7 @@ public class PdfView extends PDFView implements OnPageChangeListener,OnLoadCompl
          );
 
         if (page >= numberOfPages) {
-            WritableMap event = Arguments.createMap();
+            event = Arguments.createMap();
             event.putString("message", "documentCompleted");
 
             ReactContext reactContext = (ReactContext)this.getContext();
