@@ -375,8 +375,12 @@ const float MIN_SCALE = 1.0f;
         PDFPage *currentPage = _pdfView.currentPage;
         unsigned long page = [_pdfDocument indexForPage:currentPage];
         unsigned long numberOfPages = _pdfDocument.pageCount;
-
+        
         _onChange(@{ @"message": [[NSString alloc] initWithString:[NSString stringWithFormat:@"pageChanged|%lu|%lu", page+1, numberOfPages]]});
+        
+        if ((page + 1) >= numberOfPages) {
+            _onChange(@{ @"message": [[NSString alloc] initWithString:[NSString stringWithFormat:@"documentCompleted|%lu|%lu", page+1, numberOfPages]]});
+        }
     }
     
 }
@@ -413,10 +417,10 @@ const float MIN_SCALE = 1.0f;
     } else {
         _scale = min;
     }
-
+    
     _pdfView.scaleFactor = _scale*_fixScaleFactor;
-
-    [self setNeedsDisplay];    
+    
+    [self setNeedsDisplay];
 }
 
 /**
@@ -491,7 +495,7 @@ const float MIN_SCALE = 1.0f;
     pinchRecognizer.delegate = self;
     
     UILongPressGestureRecognizer *longPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self
-                                                                                            action:@selector(handleLongPress:)];
+                                                                                                      action:@selector(handleLongPress:)];
     // Making sure the allowable movement isn not too narrow
     longPressRecognizer.allowableMovement=100;
     // Important: The duration must be long enough to allow taps but not longer than the period in which view opens the magnifying glass
