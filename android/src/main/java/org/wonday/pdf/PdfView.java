@@ -105,7 +105,7 @@ public class PdfView extends PDFView implements OnPageChangeListener,OnLoadCompl
             event = Arguments.createMap();
             event.putString("message", "documentCompleted");
 
-            ReactContext reactContext = (ReactContext)this.getContext();
+            reactContext = (ReactContext)this.getContext();
             reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(
                 this.getId(),
                 "topChange",
