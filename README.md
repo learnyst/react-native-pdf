@@ -11,9 +11,18 @@ A react native PDF view component (cross-platform support)
 * double tap for zoom
 * support password protected pdf
 
+### Supported versions - React Native / react-native-pdf
+
+> The table below shows the supported versions of React Native for different versions of `react-native-pdf`.
+
+| react-native-pdf          |  4.x.x - 5.0.x   |      5.0.9+      |
+| ------------------------- | :------: | :-------------: |
+| React Native              | 0.4x - 0.56  |  ^0.57  |
+
 ### Installation
 We use [`rn-fetch-blob`](https://github.com/joltup/rn-fetch-blob) to handle file system access in this package,
 So you should install react-native-pdf and rn-fetch-blob
+*Notice: rn-fetch-blob v0.10.14 has a bug, please use v0.10.13*
 
 ```bash
 npm install rn-fetch-blob --save
@@ -21,6 +30,22 @@ npm install react-native-pdf --save
 
 react-native link rn-fetch-blob
 react-native link react-native-pdf
+```
+
+**if you use RN 0.59.0+, please add following to your android/app/build.gradle**
+```diff
+android {
+
++    packagingOptions {
++       pickFirst 'lib/x86/libc++_shared.so'
++       pickFirst 'lib/x86_64/libjsc.so'
++       pickFirst 'lib/arm64-v8a/libjsc.so'
++       pickFirst 'lib/arm64-v8a/libc++_shared.so'
++       pickFirst 'lib/x86_64/libc++_shared.so'
++       pickFirst 'lib/armeabi-v7a/libc++_shared.so'
++     }
+
+   }
 ```
 
 ### FAQ
@@ -59,8 +84,38 @@ A3. Check your uri, if you hit a pdf that is hosted on a `http` you will need to
 Q4. why doesn't it work with react native expo?.  
 A4. Expo does not support native module. you can read more expo caveats [`here`](https://facebook.github.io/react-native/docs/getting-started.html#caveats)
 
-
 ### ChangeLog
+
+v5.1.3
+1. remove singleTap action from iOS, make the same with Android.
+
+v5.1.2
+1. fix overflow when zoom on Android
+
+v5.1.1
+1. call onScaleChanged when tapped on iOS
+2. fix overflow when zoom
+3. add packagingOptions for Detox e2e tests build and androidTest target
+4. add activityIndicatorProps to index.d.ts
+
+v5.1.0
+1. remove encodeURI(), **Degrade Notice: If you use Chinese/Japanese/Korean path, please encodeURI() yourself**
+2. fix enableAnnotationRendering on iOS
+3. Trusting certificates for api http redirection
+
+v5.0.12
+1. fix some codes for code safe
+2. add flow typings
+3. update style prop type
+
+v5.0.11
+1. fix sample codes
+
+v5.0.10
+1. support enablePaging for ios<11.0
+2. disable long press on ios (the same with android)
+3. make iOS singleTap scale the same action with android
+4. recreate sample with RN 0.57
 
 v5.0.9
 1. fix podspec
@@ -178,8 +233,8 @@ const styles = StyleSheet.create({
 | source        | object        | not null         | PDF source like {uri:xxx, cache:false}. see the following for detail.| ✔ | ✔ | <3.0 |
 | page          | number        | 1                | initial page index          | ✔   | ✔ | <3.0 |
 | scale         | number        | 1.0              | should minScale<=scale<=maxScale| ✔   | ✔ | <3.0 |
-| minScale         | number        | 1.0              | max scale| ✔   | ✔ | 5.0.5 |
-| maxScale         | number        | 3.0              | min scale| ✔   | ✔ | 5.0.5 |
+| minScale         | number        | 1.0              | min scale| ✔   | ✔ | 5.0.5 |
+| maxScale         | number        | 3.0              | max scale| ✔   | ✔ | 5.0.5 |
 | horizontal    | bool          | false            | draw page direction, if you want to listen the orientation change, you can use  [[react-native-orientation-locker]](https://github.com/wonday/react-native-orientation-locker)| ✔   | ✔ | <3.0 |
 | fitWidth      | bool          | false            | if true fit the width of view, can not use fitWidth=true together with scale| ✔   | ✔ | <3.0, abandoned from 3.0 |
 | fitPolicy     | number        | 2                | 0:fit width, 1:fit height, 2:fit both(default)| ✔   | ✔ | 3.0 |
@@ -187,7 +242,7 @@ const styles = StyleSheet.create({
 | password      | string        | ""               | pdf password, if password error, will call OnError() with message "Password required or incorrect password."        | ✔   | ✔ | <3.0 |
 | style         | object        | {backgroundColor:"#eee"} | support normal view style, you can use this to set border/spacing color... | ✔   | ✔ | <3.0 |
 | activityIndicator   | Component       | <ProgressBar/> | when loading show it as an indicator, you can use your component| ✔   | ✔ | <3.0 |
-| activityIndicatorProps  | object      | {color:'#009900',progressTintColor:'#009900'} | activityIndicator props | ✔ | ✔ | 3.1 |
+| activityIndicatorProps  | object      | {color:'#009900', progressTintColor:'#009900'} | activityIndicator props | ✔ | ✔ | 3.1 |
 | enableAntialiasing  | bool            | true        | improve rendering a little bit on low-res screens, but maybe course some problem on Android 4.4, so add a switch  | ✖   | ✔ | <3.0 |
 | enablePaging  | bool            | false        | only show one page in screen   | ✔ | ✔ | 5.0.1 |
 | enableRTL  | bool            | false        | scroll page as "page3, page2, page1"  | ✔   | ✖ | 5.0.1 |
