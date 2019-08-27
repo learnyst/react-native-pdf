@@ -287,7 +287,7 @@ export default class Pdf extends Component {
                     }
 
                     if (expectedContentLength != actualContentLength) {
-                        throw new Error("DownloadFailed:" + source.uri);
+                        throw new Error("DownloadFailed:" + source.uri + ", content length mismatch");
                     }
                 }
 
