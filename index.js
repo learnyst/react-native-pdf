@@ -270,6 +270,13 @@ export default class Pdf extends Component {
 
                 this.lastRNBFTask = null;
 
+                if (res && res.respInfo && res.respInfo.status) {
+                    let status = res.respInfo.status;
+                    if (status !== 200) {
+                        throw new Error("DownloadFailed:" + source.uri);
+                    }
+                }
+
                 if (res && res.respInfo && res.respInfo.headers && !res.respInfo.headers["Content-Encoding"] && !res.respInfo.headers["Transfer-Encoding"] && res.respInfo.headers["Content-Length"]) {
                     const expectedContentLength = res.respInfo.headers["Content-Length"];
                     let actualContentLength;
