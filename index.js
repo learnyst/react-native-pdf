@@ -271,14 +271,22 @@ export default class Pdf extends Component {
                 this.lastRNBFTask = null;
 
                 if (res && res.respInfo && res.respInfo.status) {
-                    let status = res.respInfo.status;
-                    if (status !== 200) {
+                    if (res.respInfo.status !== 200) {
                         throw new Error("DownloadFailed:" + source.uri);
                     }
                 }
 
-                if (res && res.respInfo && res.respInfo.headers && !res.respInfo.headers["Content-Encoding"] && !res.respInfo.headers["Transfer-Encoding"] && res.respInfo.headers["Content-Length"]) {
-                    const expectedContentLength = res.respInfo.headers["Content-Length"];
+                let contentEncodingType = undefined;
+                let transferEncodingType = undefined;
+                let contentLength = 0;
+                if (res && res.respInfo && res.respInfo.headers) {
+                    contentEncodingType = res.respInfo.headers["Content-Encoding"] || res.respInfo.headers["content-encoding"];
+                    transferEncodingType = res.respInfo.headers["Transfer-Encoding"] || res.respInfo.headers["transfer-encoding"];
+                    contentLength = res.respInfo.headers["Content-Length"] || res.respInfo.headers["content-length"];
+                }
+                
+                if (!contentEncodingType && !transferEncodingType && contentLength) {
+                    const expectedContentLength = contentLength;
                     let actualContentLength;
 
                     try {
