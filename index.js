@@ -270,21 +270,23 @@ export default class Pdf extends Component {
 
                 this.lastRNBFTask = null;
 
-                if (res && res.respInfo && res.respInfo.status) {
-                    if (res.respInfo.status !== 200) {
-                        throw new Error("DownloadFailed:" + source.uri);
-                    }
-                }
-
                 let contentEncodingType = undefined;
                 let transferEncodingType = undefined;
                 let contentLength = 0;
+                let wasabiResultCode = 0;
                 if (res && res.respInfo && res.respInfo.headers) {
                     contentEncodingType = res.respInfo.headers["Content-Encoding"] || res.respInfo.headers["content-encoding"];
                     transferEncodingType = res.respInfo.headers["Transfer-Encoding"] || res.respInfo.headers["transfer-encoding"];
                     contentLength = res.respInfo.headers["Content-Length"] || res.respInfo.headers["content-length"];
+                    wasabiResultCode = res.respInfo.headers["Wasabi-Result"] || res.respInfo.headers["wasabi-result"];
                 }
-                
+
+                if (res && res.respInfo && res.respInfo.status) {
+                    if (res.respInfo.status !== 200) {
+                        throw new Error("DownloadFailed:" + source.uri + " wasabiResult: " + wasabiResultCode);
+                    }
+                }
+
                 if (!contentEncodingType && !transferEncodingType && contentLength) {
                     const expectedContentLength = contentLength;
                     let actualContentLength;
@@ -293,16 +295,17 @@ export default class Pdf extends Component {
                         const fileStats = await RNFetchBlob.fs.stat(res.path());
 
                         if (!fileStats || !fileStats.size) {
-                            throw new Error("FileNotFound:" + source.uri);
+                            throw new Error("FileNotFound:" + source.uri + " wasabiResult: " + wasabiResultCode);
                         }
 
                         actualContentLength = fileStats.size;
                     } catch (error) {
-                        throw new Error("DownloadFailed:" + source.uri);
+                        throw new Error("DownloadFailed:" + source.uri + " wasabiResult: " + wasabiResultCode);
                     }
 
                     if (expectedContentLength != actualContentLength) {
-                        throw new Error("DownloadFailed:" + source.uri + ", content length mismatch");
+                        throw new Error("DownloadFailed:" + source.uri + ", content length mismatch"
+                            + " wasabiResult: " + wasabiResultCode);
                     }
                 }
 
