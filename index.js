@@ -303,7 +303,7 @@ export default class Pdf extends Component {
                         throw new Error("DownloadFailed:" + source.uri + " wasabiResult: " + wasabiResultCode);
                     }
 
-                    if (expectedContentLength != actualContentLength) {
+                    if (parseInt(expectedContentLength) != parseInt(actualContentLength)) {
                         throw new Error("DownloadFailed:" + source.uri + ", content length mismatch"
                             + " wasabiResult: " + wasabiResultCode);
                     }
