@@ -340,7 +340,6 @@ export default class Pdf extends Component {
         if (this._root){
             this._root.setNativeProps(nativeProps);
         }
-
     };
 
     setPage( pageNumber ) {
