@@ -343,6 +343,15 @@ export default class Pdf extends Component {
 
     };
 
+    setPage( pageNumber ) {
+        if ( (pageNumber === null) || (isNaN(pageNumber)) ) {
+            throw new Error('Specified pageNumber is not a number');
+        }
+        this.setNativeProps({
+            page: pageNumber
+        });
+    }
+
     _onChange = (event) => {
 
         let message = event.nativeEvent.message.split('|');

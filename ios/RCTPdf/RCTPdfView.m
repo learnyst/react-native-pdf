@@ -136,8 +136,26 @@ const float MIN_SCALE = 1.0f;
         if (_pdfDocument && ([changedProps containsObject:@"path"] || [changedProps containsObject:@"spacing"])) {
             if (_horizontal) {
                 _pdfView.pageBreakMargins = UIEdgeInsetsMake(0,_spacing,0,0);
+                if (_spacing==0) {
+                    if (@available(iOS 12.0, *)) {
+                        _pdfView.pageShadowsEnabled = NO;
+                    }
+                } else {
+                    if (@available(iOS 12.0, *)) {
+                        _pdfView.pageShadowsEnabled = YES;
+                    }
+                }
             } else {
                 _pdfView.pageBreakMargins = UIEdgeInsetsMake(0,0,_spacing,0);
+                if (_spacing==0) {
+                    if (@available(iOS 12.0, *)) {
+                        _pdfView.pageShadowsEnabled = NO;
+                    }
+                } else {
+                    if (@available(iOS 12.0, *)) {
+                        _pdfView.pageShadowsEnabled = YES;
+                    }
+                }
             }
         }
         
@@ -409,7 +427,6 @@ const float MIN_SCALE = 1.0f;
     float min = _pdfView.minScaleFactor/_fixScaleFactor;
     float max = _pdfView.maxScaleFactor/_fixScaleFactor;
     float mid = (max - min) / 2 + min;
-
     float scale = _scale;
     if (_scale < mid) {
         scale = mid;
@@ -496,7 +513,7 @@ const float MIN_SCALE = 1.0f;
                                                                                           action:@selector(handlePinch:)];
     [self addGestureRecognizer:pinchRecognizer];
     pinchRecognizer.delegate = self;
-
+    
     UILongPressGestureRecognizer *longPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self
                                                                                             action:@selector(handleLongPress:)];
     // Making sure the allowable movement isn not too narrow
@@ -504,7 +521,8 @@ const float MIN_SCALE = 1.0f;
     // Important: The duration must be long enough to allow taps but not longer than the period in which view opens the magnifying glass
     longPressRecognizer.minimumPressDuration=0.3;
     
-    [self addGestureRecognizer:longPressRecognizer];    
+    [self addGestureRecognizer:longPressRecognizer];
+    
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer

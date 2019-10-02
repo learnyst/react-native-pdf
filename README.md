@@ -10,6 +10,7 @@ A react native PDF view component (cross-platform support)
 * drag and zoom
 * double tap for zoom
 * support password protected pdf
+* jump to a specific page in the pdf
 
 ### Supported versions - React Native / react-native-pdf
 
@@ -57,8 +58,11 @@ You can add it manually. For detail you can see the issue [`#24`](https://github
 Q2. When running, it shows ```'Pdf' has no propType for native prop RCTPdf.acessibilityLabel of native type 'String'```  
 A2. Your react-native version is too old, please upgrade it to 0.47.0+ see also [`#39`](https://github.com/wonday/react-native-pdf/issues/39)
 
-Q3. When I run the example app I get a white screen / the loading bar isn't progressing on IOS.  
-A3. Check your uri, if you hit a pdf that is hosted on a `http` you will need to add an exception for the server hosting the pdf in the ios `info.plist`. Here is an example :  
+Q3. When I run the example app I get a white/gray screen / the loading bar isn't progressing .  
+A3. Check your uri, if you hit a pdf that is hosted on a `http` you will need to do the following:
+
+**iOS:**
+add an exception for the server hosting the pdf in the ios `info.plist`. Here is an example :  
 
 ```
 <key>NSAppTransportSecurity</key>
@@ -81,10 +85,29 @@ A3. Check your uri, if you hit a pdf that is hosted on a `http` you will need to
 </dict>
 ```
 
+**Android:**
+[`see here`](https://stackoverflow.com/questions/54818098/cleartext-http-traffic-not-permitted)
+
 Q4. why doesn't it work with react native expo?.  
 A4. Expo does not support native module. you can read more expo caveats [`here`](https://facebook.github.io/react-native/docs/getting-started.html#caveats)
 
+Q5. Why can't I run the iOS example? `'Failed to build iOS project. We ran "xcodebuild" command but it exited with error code 65.'`
+A5. Run the following commands in the project folder (e.g. `react-native-pdf/example`) to ensure that all dependencies are available:
+```
+yarn install (or npm install)
+cd ios
+pod install
+cd ..
+react-native run-ios
+```
+
+
 ### ChangeLog
+
+v5.1.5
+1. add setPage() method
+2. upgrade to AndroidPdfViewer to 3.2.0-beta.1
+3. fix some codes ,readme and sample
 
 v5.1.4
 1. Update example project to RN 0.60.4
@@ -127,47 +150,6 @@ v5.0.9
 2. NS_CLASS_AVAILABLE_IOS(11_0) to PDFKit related codes
 3. Fix pdfs when pipe appears in table content json
 4. modify build.gradle for RN 0.57
-
-v5.0.8
-1. fix podspec
-
-v5.0.7
-1. onLoadComplete return table of contents
-2. delete tmp file after downloaded
-
-v5.0.6
-1. add accessible to PdfPageView
-2. restore podspec
-
-v5.0.5
-1. add minScale, maxScale props
-2. fix pdf display box
-3. fix Content-length check
-
-v5.0.4
-1. fix ios background not work
-2. fix can not show two pdf in in one page
-
-v5.0.3
-1. add enableAnnotationRendering property support, default enableAnnotationRendering=true
-2. android build.gradle can reference root project sdk and buildTool setting
-3. fix ios progressbar not work
-
-v5.0.2
-1. fix file successfully download check
-
-v5.0.1
-1. add paging support (ios and android)
-2. add RTL support (ios)
-3. fix position when set page (ios)
-
-v5.0.0 (**break change**)
-1. use iOS PDFKit to show pdf (iOS SDK>=11)
-2. use js+native to show pdf (iOS SDK<11, the same with 4.0.0)
-3. support pdf with layers (iOS SDK>=11)
-4. support pdf with links (iOS SDK>=11)
-5. fix zoom (iOS SDK>=11)
-
 
 [[more]](https://github.com/wonday/react-native-pdf/releases)
 
@@ -225,6 +207,7 @@ const styles = StyleSheet.create({
     pdf: {
         flex:1,
         width:Dimensions.get('window').width,
+        height:Dimensions.get('window').height,
     }
 });
 
@@ -279,3 +262,28 @@ const styles = StyleSheet.create({
 | `{uri:"bundle-assets://xxx.pdf"}` | load pdf from assets, you must add pdf to project by xcode. this does not support folder. | ✔ | ✖ |
 | `{uri:"base64data"}` | load pdf from base64 string | ✔   | ✔ |
 | `{uri:"file:///absolute/path/to/xxx.pdf"}` | load pdf from local file system | ✔   | ✔ |
+
+
+### Methods
+* [setPage](#setPage)
+
+Methods operate on a ref to the PDF element. You can get a ref with the following code:
+```
+return (
+  <Pdf
+    ref={(pdf) => { this.pdf = pdf; }}
+    source={source}
+    ...
+  />
+);
+```
+
+#### setPage()
+`setPage(pageNumber)`
+
+Set the current page of the PDF component. pageNumber is a positive integer. If pageNumber > numberOfPages, current page is not changed.
+
+Example:
+```
+this.pdf.setPage(42); // Display the answer to the Ultimate Question of Life, the Universe, and Everything
+```
