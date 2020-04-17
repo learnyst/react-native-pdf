@@ -13,7 +13,7 @@
 
 @interface SecurePdfView : PDFView
 {
-    
+
 }
 
 @end
